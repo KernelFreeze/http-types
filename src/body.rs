@@ -55,7 +55,7 @@ pin_project_lite::pin_project! {
     /// and not rely on the fallback mechanisms. However, they're still there if you need them.
     pub struct Body {
         #[pin]
-        reader: Box<dyn AsyncBufRead + Unpin + Send + Sync + 'static>,
+        reader: Box<dyn AsyncBufRead + Unpin + 'static>,
         mime: Option<Mime>,
         length: Option<u64>,
         bytes_read: u64,
@@ -105,7 +105,7 @@ impl Body {
     /// req.set_body(Body::from_reader(cursor, Some(len)));
     /// ```
     pub fn from_reader(
-        reader: impl AsyncBufRead + Unpin + Send + Sync + 'static,
+        reader: impl AsyncBufRead + Unpin + 'static,
         length: Option<u64>,
     ) -> Self {
         Self {
@@ -129,7 +129,7 @@ impl Body {
     /// let body = Body::from_reader(cursor, None);
     /// let _ = body.into_reader();
     /// ```
-    pub fn into_reader(self) -> Box<dyn AsyncBufRead + Unpin + Send + Sync + 'static> {
+    pub fn into_reader(self) -> Box<dyn AsyncBufRead + Unpin + 'static> {
         self.reader
     }
 
